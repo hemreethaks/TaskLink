@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block title %}Freelancer Dashboard{% endblock %}
+{% block page_title %}Freelancer Dashboard{% endblock %}
+
+{% block content %}
+<div class="row g-4 mt-1">
+
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card card border-0 shadow-sm">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="stat-icon bg-primary-soft text-primary">
+          <i class="bi bi-send fs-4"></i>
+        </div>
+        <div>
+          <div class="stat-number">{{ applied }}</div>
+          <div class="stat-label">Applications Sent</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card card border-0 shadow-sm">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="stat-icon bg-warning-soft text-warning">
+          <i class="bi bi-briefcase fs-4"></i>
+        </div>
+        <div>
+          <div class="stat-number">{{ assigned }}</div>
+          <div class="stat-label">Tasks Assigned</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card card border-0 shadow-sm">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="stat-icon bg-success-soft text-success">
+          <i class="bi bi-check2-circle fs-4"></i>
+        </div>
+        <div>
+          <div class="stat-number">{{ completed }}</div>
+          <div class="stat-label">Completed & Paid</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card card border-0 shadow-sm">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="stat-icon bg-info-soft text-info">
+          <i class="bi bi-wallet2 fs-4"></i>
+        </div>
+        <div>
+          <div class="stat-number">₹{{ total_earned }}</div>
+          <div class="stat-label">Total Earned</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-3 mt-2">
+  <div class="col-12">
+    <h6 class="text-muted fw-semibold text-uppercase mb-2">Quick Actions</h6>
+  </div>
+  <div class="col-md-4">
+    <a href="{{ url_for('freelancer.browse_tasks') }}" class="text-decoration-none">
+      <div class="card border-0 shadow-sm hover-lift p-3 d-flex flex-row align-items-center gap-3">
+        <div class="stat-icon bg-primary-soft text-primary">
+          <i class="bi bi-search fs-5"></i>
+        </div>
+        <div>
+          <p class="mb-0 fw-semibold">Browse Tasks</p>
+          <small class="text-muted">Find open tasks</small>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <a href="{{ url_for('freelancer.assigned_tasks') }}" class="text-decoration-none">
+      <div class="card border-0 shadow-sm hover-lift p-3 d-flex flex-row align-items-center gap-3">
+        <div class="stat-icon bg-warning-soft text-warning">
+          <i class="bi bi-briefcase fs-5"></i>
+        </div>
+        <div>
+          <p class="mb-0 fw-semibold">My Work</p>
+          <small class="text-muted">Assigned tasks</small>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <a href="{{ url_for('freelancer.payments') }}" class="text-decoration-none">
+      <div class="card border-0 shadow-sm hover-lift p-3 d-flex flex-row align-items-center gap-3">
+        <div class="stat-icon bg-success-soft text-success">
+          <i class="bi bi-cash-stack fs-5"></i>
+        </div>
+        <div>
+          <p class="mb-0 fw-semibold">Payments</p>
+          <small class="text-muted">Earnings history</small>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- Recent Assigned Tasks -->
+<div class="card border-0 shadow-sm mt-4">
+  <div class="card-header bg-white py-3">
+    <h6 class="mb-0 fw-bold">
+      <i class="bi bi-clock-history me-2 text-primary"></i>Recent Assigned Tasks
+    </h6>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Title</th>
+            <th>Budget</th>
+            <th>Deadline</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in recent_tasks %}
+          <tr>
+            <td class="fw-semibold">{{ t.title }}</td>
+            <td class="text-success fw-semibold">₹{{ t.budget }}</td>
+            <td class="text-muted small">{{ t.deadline.strftime('%d %b %Y') }}</td>
+            <td><span class="badge {{ status_badge(t.status) }}">{{ t.status }}</span></td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="4" class="text-center text-muted py-4">
+              No assigned tasks yet. <a href="{{ url_for('freelancer.browse_tasks') }}">Browse open tasks</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

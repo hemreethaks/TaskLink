@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Post a Task{% endblock %}
+{% block page_title %}Post a New Task{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-3">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white py-3">
+        <h6 class="mb-0 fw-bold">
+          <i class="bi bi-plus-circle me-2 text-primary"></i>Fill in Task Details
+        </h6>
+      </div>
+      <div class="card-body p-4">
+        <form method="POST" action="{{ url_for('client.create_task') }}">
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Task Title <span class="text-danger">*</span></label>
+            <input type="text" name="title" class="form-control"
+                   placeholder="e.g. Design a logo for my bakery" required/>
+            <div class="form-text">Keep it short and descriptive.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Description <span class="text-danger">*</span></label>
+            <textarea name="description" class="form-control" rows="4"
+                      placeholder="Describe the task in detail — what you need, format, deliverables..." required></textarea>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Category <span class="text-danger">*</span></label>
+              <select name="category_id" class="form-select" required>
+                <option value="">-- Select Category --</option>
+                {% for cat in categories %}
+                  <option value="{{ cat.category_id }}">{{ cat.category_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Workload Level <span class="text-danger">*</span></label>
+              <select name="workload_level" class="form-select" required>
+                <option value="">-- Select Level --</option>
+                <option value="LOW">LOW – Simple task (×1.0)</option>
+                <option value="MEDIUM">MEDIUM – Moderate effort (×1.2)</option>
+                <option value="HIGH">HIGH – Complex task (×1.5)</option>
+              </select>
+              <div class="form-text">Payment = Budget × Multiplier</div>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Budget (₹) <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text">₹</span>
+                <input type="number" name="budget" class="form-control"
+                       placeholder="500" min="1" step="0.01" required/>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Deadline <span class="text-danger">*</span></label>
+              <input type="datetime-local" name="deadline" class="form-control" required/>
+              <div class="form-text">Freelancer gets notified 1 hr before deadline.</div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary px-4 fw-semibold">
+              <i class="bi bi-send me-2"></i>Post Task
+            </button>
+            <a href="{{ url_for('client.my_tasks') }}" class="btn btn-outline-secondary px-4">
+              Cancel
+            </a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

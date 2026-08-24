@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Release Payment{% endblock %}
+{% block page_title %}Release Payment{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white py-3">
+        <h6 class="mb-0 fw-bold">
+          <i class="bi bi-cash-coin me-2 text-warning"></i>Confirm Payment Release
+        </h6>
+      </div>
+      <div class="card-body p-4">
+
+        <!-- Task Summary -->
+        <div class="bg-light rounded p-3 mb-4">
+          <h6 class="fw-bold mb-2">Task: {{ task.title }}</h6>
+          <div class="row g-2 small text-muted">
+            <div class="col-6">
+              <i class="bi bi-person me-1"></i>
+              Freelancer: <strong class="text-dark">{{ assignment.freelancer.name }}</strong>
+            </div>
+            <div class="col-6">
+              <i class="bi bi-layers me-1"></i>
+              Workload: <strong class="text-dark">{{ task.workload_level }}</strong>
+            </div>
+            <div class="col-6">
+              <i class="bi bi-currency-rupee me-1"></i>
+              Base Budget: <strong class="text-dark">₹{{ task.budget }}</strong>
+            </div>
+            <div class="col-6">
+              <i class="bi bi-calculator me-1"></i>
+              Final Amount: <strong class="text-success fs-6">₹{{ estimated }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multiplier Info -->
+        <div class="alert alert-info py-2 small">
+          <i class="bi bi-info-circle me-1"></i>
+          Payment = Budget × Workload Multiplier
+          (LOW=×1.0, MEDIUM=×1.2, HIGH=×1.5)
+        </div>
+
+        <form method="POST">
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-warning fw-bold py-2"
+                    onclick="return confirm('Release ₹{{ estimated }} to {{ assignment.freelancer.name }}?')">
+              <i class="bi bi-send-check me-2"></i>Release ₹{{ estimated }} to {{ assignment.freelancer.name }}
+            </button>
+            <a href="{{ url_for('client.my_tasks') }}" class="btn btn-outline-secondary">
+              Cancel
+            </a>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

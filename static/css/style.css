@@ -1,0 +1,487 @@
+/* ============================================================
+   TaskLink – Custom Stylesheet
+   Theme: Dark Blue sidebar + clean white main content
+   ============================================================ */
+
+/* ── Root variables ── */
+:root {
+  --sidebar-width: 240px;
+  --sidebar-bg: #1a2234;
+  --sidebar-active: #2563eb;
+  --topbar-height: 60px;
+  --topbar-bg: #ffffff;
+  --body-bg: #f4f6fb;
+  --card-radius: 12px;
+  --text-muted: #8a94a6;
+}
+
+/* ── General ── */
+body {
+  background-color: var(--body-bg);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #1e293b;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+#wrapper {
+  min-height: 100vh;
+}
+
+#sidebar {
+  width: var(--sidebar-width);
+  min-height: 100vh;
+  background: var(--sidebar-bg);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sidebar-brand {
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 800;
+  padding: 22px 20px 10px 20px;
+  letter-spacing: 1px;
+}
+
+.sidebar-brand i {
+  font-size: 1.4rem;
+  color: #93c5fd;
+}
+
+.sidebar-divider {
+  border-color: rgba(255,255,255,0.1);
+  margin: 6px 16px;
+}
+
+/* Sidebar nav links */
+#sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.65);
+  border-radius: 8px;
+  padding: 9px 14px;
+  margin-bottom: 2px;
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+#sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+#sidebar .nav-link.active {
+  background: var(--sidebar-active);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+#sidebar .nav-link.text-danger {
+  color: #f87171 !important;
+}
+#sidebar .nav-link.text-danger:hover {
+  background: rgba(248, 113, 113, 0.12);
+  color: #ef4444 !important;
+}
+
+/* ============================================================
+   CONTENT WRAPPER
+   ============================================================ */
+#content-wrapper {
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   TOP NAVBAR
+   ============================================================ */
+.topbar {
+  height: var(--topbar-height);
+  background: var(--topbar-bg);
+  border-bottom: 1px solid #e8ecf0;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.topbar-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* User pill in topbar */
+.user-pill {
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  display: flex;
+  align-items: center;
+}
+
+.role-badge {
+  font-size: 10px;
+  font-weight: 700;
+  background: #1a2234;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   NOTIFICATION DROPDOWN
+   ============================================================ */
+.notif-dropdown {
+  min-width: 320px;
+  max-height: 360px;
+  overflow-y: auto;
+  border: none;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  border-radius: 12px;
+  padding: 8px 0;
+}
+
+.notif-item {
+  font-size: 12.5px;
+  padding: 10px 16px;
+  white-space: normal;
+  line-height: 1.4;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+.notif-item:hover {
+  background: #f8faff;
+  color: #1e40af;
+}
+
+/* ============================================================
+   STAT CARDS
+   ============================================================ */
+.stat-card {
+  border-radius: var(--card-radius);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1) !important;
+}
+
+.stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-number {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Soft color backgrounds */
+.bg-primary-soft  { background: #eff6ff; }
+.bg-success-soft  { background: #f0fdf4; }
+.bg-warning-soft  { background: #fffbeb; }
+.bg-danger-soft   { background: #fef2f2; }
+.bg-info-soft     { background: #f0f9ff; }
+
+/* ============================================================
+   GENERIC CARDS
+   ============================================================ */
+.card {
+  border-radius: var(--card-radius);
+}
+
+.card-header {
+  border-radius: var(--card-radius) var(--card-radius) 0 0 !important;
+  border-bottom: 1px solid #e8ecf0;
+}
+
+/* Hover lift effect for clickable cards */
+.hover-lift {
+  transition: transform 0.18s, box-shadow 0.18s;
+  cursor: pointer;
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.09) !important;
+}
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.table thead th {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+  border-bottom: 1px solid #e8ecf0;
+  padding: 12px 16px;
+}
+
+.table tbody td {
+  padding: 12px 16px;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-hover tbody tr:hover {
+  background: #f8faff;
+}
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+.badge {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+.form-control, .form-select {
+  border-radius: 8px;
+  border-color: #d1d9e0;
+  font-size: 13.5px;
+  padding: 8px 12px;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.input-group-text {
+  border-radius: 8px 0 0 8px;
+  border-color: #d1d9e0;
+  background: #f8fafc;
+  font-size: 13.5px;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+
+.btn-primary {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+.btn-primary:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+/* ============================================================
+   AUTH PAGES (Login / Register)
+   ============================================================ */
+.auth-bg {
+  background: #b0bec5;
+  background: linear-gradient(160deg, #b8c6cc 0%, #8fa3ad 50%, #7b97a3 100%);
+  min-height: 100vh;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: none;
+  background: #cfd8dc;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.18);
+}
+
+.auth-header {
+  background: #b0bec5;
+  color: #37474f;
+}
+
+.auth-logo {
+  font-size: 3.5rem;
+  color: #78909c;
+  background: #eceff1;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.auth-header h3 {
+  color: #37474f;
+  letter-spacing: 3px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.auth-header p {
+  color: #607d8b !important;
+}
+
+.letter-space { letter-spacing: 4px; }
+
+.auth-card .card-body {
+  background: #cfd8dc;
+}
+
+.auth-input-group .auth-icon-box {
+  background: #eceff1;
+  border-color: #b0bec5;
+  color: #78909c;
+}
+
+.auth-input {
+  background: #eceff1 !important;
+  border-color: #b0bec5 !important;
+  color: #37474f !important;
+}
+
+.auth-input:focus {
+  border-color: #78909c !important;
+  box-shadow: 0 0 0 3px rgba(120,144,156,0.15) !important;
+  background: #ffffff !important;
+}
+
+.auth-input::placeholder {
+  color: #90a4ae;
+}
+
+.btn-auth {
+  background: #5b9bd5;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  letter-spacing: 2px;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+.btn-auth:hover {
+  background: #4a89c3;
+  color: white;
+}
+
+.form-check-input:checked {
+  background-color: #5b9bd5;
+  border-color: #5b9bd5;
+}
+
+.auth-card hr {
+  border-color: #b0bec5;
+}
+
+/* Role option radio buttons */
+.role-option {
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.role-option:has(input:checked) {
+  border-color: #2563eb !important;
+  background: #eff6ff;
+}
+
+/* ============================================================
+   TASK CARDS (Browse Tasks)
+   ============================================================ */
+.task-card {
+  border-radius: var(--card-radius);
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+
+.task-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.1) !important;
+}
+
+/* ============================================================
+   AVATAR CIRCLE (Applications page)
+   ============================================================ */
+.avatar-circle {
+  width: 38px;
+  height: 38px;
+  background: #2563eb;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   ALERTS
+   ============================================================ */
+.alert {
+  border-radius: 10px;
+  font-size: 13.5px;
+}
+
+/* ============================================================
+   SCROLLBAR (sidebar)
+   ============================================================ */
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  #sidebar {
+    width: 200px;
+    transform: translateX(-100%);
+  }
+  #content-wrapper {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}All Tasks{% endblock %}
+{% block page_title %}All Tasks{% endblock %}
+
+{% block content %}
+<div class="card border-0 shadow-sm mt-3">
+  <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+    <h6 class="mb-0 fw-bold"><i class="bi bi-list-task me-2 text-success"></i>All Tasks</h6>
+    <span class="badge bg-success rounded-pill">{{ tasks|length }} tasks</span>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Client</th>
+            <th>Category</th>
+            <th>Budget (₹)</th>
+            <th>Workload</th>
+            <th>Deadline</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in tasks %}
+          <tr>
+            <td class="text-muted small">{{ t.task_id }}</td>
+            <td class="fw-semibold">{{ t.title }}</td>
+            <td class="text-muted small">{{ t.client.name }}</td>
+            <td><span class="badge bg-light text-dark border">{{ t.category.category_name }}</span></td>
+            <td class="fw-semibold text-success">₹{{ t.budget }}</td>
+            <td>
+              {% if t.workload_level == 'HIGH' %}
+                <span class="badge bg-danger">HIGH</span>
+              {% elif t.workload_level == 'MEDIUM' %}
+                <span class="badge bg-warning text-dark">MEDIUM</span>
+              {% else %}
+                <span class="badge bg-success">LOW</span>
+              {% endif %}
+            </td>
+            <td class="text-muted small">{{ t.deadline.strftime('%d %b %Y %H:%M') }}</td>
+            <td>
+              <span class="badge {{ status_badge(t.status) }}">{{ t.status }}</span>
+            </td>
+            <td>
+              {% if t.status in ['CANCELLED', 'COMPLETED'] %}
+                <a href="{{ url_for('admin.delete_task', task_id=t.task_id) }}"
+                   class="btn btn-sm btn-outline-danger"
+                   onclick="return confirm('Delete this task permanently?')">
+                  <i class="bi bi-trash me-1"></i>Remove
+                </a>
+              {% else %}
+                <span class="text-muted small">Active</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="9" class="text-center text-muted py-4">No tasks found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

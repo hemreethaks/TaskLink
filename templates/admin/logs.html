@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Activity Logs{% endblock %}
+{% block page_title %}Activity Logs{% endblock %}
+
+{% block content %}
+<div class="card border-0 shadow-sm mt-3">
+  <div class="card-header bg-white py-3">
+    <h6 class="mb-0 fw-bold"><i class="bi bi-journal-text me-2 text-danger"></i>System Activity Log (Last 200)</h6>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>User</th>
+            <th>Action</th>
+            <th>Task</th>
+            <th>Date & Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for log in logs %}
+          <tr>
+            <td class="text-muted small">{{ log.log_id }}</td>
+            <td>
+              <span class="fw-semibold">{{ log.user.name }}</span>
+              <span class="badge bg-light text-dark border small ms-1">{{ log.user.role }}</span>
+            </td>
+            <td>{{ log.action }}</td>
+            <td class="text-muted small">
+              {% if log.task_id %}#{{ log.task_id }}{% else %}—{% endif %}
+            </td>
+            <td class="text-muted small">{{ log.log_date.strftime('%d %b %Y, %H:%M') }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5" class="text-center text-muted py-4">No activity logs found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

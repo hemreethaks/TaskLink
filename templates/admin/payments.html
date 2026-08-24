@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Payments{% endblock %}
+{% block page_title %}All Payments{% endblock %}
+
+{% block content %}
+<div class="card border-0 shadow-sm mt-3">
+  <div class="card-header bg-white py-3">
+    <h6 class="mb-0 fw-bold"><i class="bi bi-cash-stack me-2 text-warning"></i>Payment Records</h6>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Task</th>
+            <th>Client</th>
+            <th>Freelancer</th>
+            <th>Amount (₹)</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in payments %}
+          <tr>
+            <td class="text-muted small">{{ p.payment_id }}</td>
+            <td class="fw-semibold">{{ p.task.title }}</td>
+            <td class="text-muted small">{{ p.client.name }}</td>
+            <td class="text-muted small">{{ p.freelancer.name }}</td>
+            <td class="fw-bold text-success">₹{{ p.amount }}</td>
+            <td>
+              <span class="badge {{ status_badge(p.payment_status) }}">{{ p.payment_status }}</span>
+            </td>
+            <td class="text-muted small">{{ p.payment_date.strftime('%d %b %Y') }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">No payment records found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

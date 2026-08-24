@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}Submit Work{% endblock %}
+{% block page_title %}Submit Completed Work{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-3">
+  <div class="col-lg-7">
+
+    <!-- Task Info -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="fw-bold mb-1">{{ task.title }}</h5>
+        <p class="text-muted mb-2">{{ task.description }}</p>
+        <div class="d-flex gap-3 small text-muted flex-wrap">
+          <span><i class="bi bi-tag me-1"></i>{{ task.category.category_name }}</span>
+          <span><i class="bi bi-currency-rupee me-1"></i>Budget: ₹{{ task.budget }}</span>
+          <span><i class="bi bi-clock me-1"></i>Deadline: {{ task.deadline.strftime('%d %b %Y %H:%M') }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submission Form -->
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white py-3">
+        <h6 class="mb-0 fw-bold">
+          <i class="bi bi-upload me-2 text-success"></i>Upload Your Work
+        </h6>
+      </div>
+      <div class="card-body p-4">
+        <form method="POST" enctype="multipart/form-data">
+
+          <!-- File Upload Option -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">
+              Upload File <span class="text-danger">*</span>
+            </label>
+            <div id="upload-zone" class="upload-zone p-4 text-center rounded border-2 border-dashed mb-2"
+                 style="border: 2px dashed #90a4ae; background: #f8fafc; cursor:pointer;"
+                 onclick="document.getElementById('fileInput').click()">
+              <i class="bi bi-cloud-arrow-up fs-2 text-muted"></i>
+              <p class="mb-1 text-muted fw-semibold mt-2">Click to browse or drag & drop</p>
+              <p class="text-muted small mb-0">Supported: .doc, .docx, .pdf, .ppt, .pptx, .xls, .xlsx, .zip, .png, .jpg</p>
+              <div id="file-name-display" class="mt-2 small text-success fw-semibold"></div>
+            </div>
+            <input type="file" id="fileInput" name="upload_file" class="d-none"
+                   accept=".doc,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.zip,.png,.jpg,.jpeg,.txt"
+                   onchange="showFileName(this)"/>
+
+            <div class="text-center my-2 text-muted small">— OR paste a link —</div>
+
+            <label class="form-label fw-semibold">File URL / Google Drive / GitHub Link</label>
+            <input type="text" name="file_url" id="file_url" class="form-control"
+                   placeholder="https://drive.google.com/..."/>
+            <div class="form-text">
+              Paste a public shareable link (Google Drive, Dropbox, GitHub, etc.) if you prefer.
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Submission Note</label>
+            <textarea name="submission_note" class="form-control" rows="4"
+                      placeholder="Add any notes for the client — what you did, how to use it, any instructions..."></textarea>
+          </div>
+
+          <div class="alert alert-warning py-2 small">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            Once submitted, the client will review your work and approve it.
+            Payment will be released after approval.
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success px-4 fw-semibold"
+                    onclick="return confirmSubmit()">
+              <i class="bi bi-upload me-2"></i>Submit Work
+            </button>
+            <a href="{{ url_for('freelancer.assigned_tasks') }}" class="btn btn-outline-secondary px-4">
+              Cancel
+            </a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function showFileName(input) {
+  const display = document.getElementById('file-name-display');
+  if (input.files && input.files[0]) {
+    display.textContent = '✅ Selected: ' + input.files[0].name;
+    document.getElementById('file_url').value = '';
+  }
+}
+
+// Drag and drop support
+const zone = document.getElementById('upload-zone');
+zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.style.borderColor='#5b9bd5'; });
+zone.addEventListener('dragleave', () => { zone.style.borderColor='#90a4ae'; });
+zone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  zone.style.borderColor='#90a4ae';
+  const fi = document.getElementById('fileInput');
+  fi.files = e.dataTransfer.files;
+  showFileName(fi);
+});
+
+function confirmSubmit() {
+  const file = document.getElementById('fileInput').files[0];
+  const url  = document.getElementById('file_url').value.trim();
+  if (!file && !url) {
+    alert('Please upload a file or paste a link before submitting.');
+    return false;
+  }
+  return confirm('Submit your work? This cannot be undone.');
+}
+</script>
+{% endblock %}

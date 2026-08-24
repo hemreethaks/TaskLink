@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TaskLink – {% block title %}Dashboard{% endblock %}</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
+</head>
+<body>
+
+{% if session.get('user_id') %}
+<div class="d-flex" id="wrapper">
+
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <div class="sidebar-brand">
+      <i class="bi bi-lightning-charge-fill me-2"></i>TaskLink
+    </div>
+    <hr class="sidebar-divider"/>
+
+    <ul class="nav flex-column px-2">
+      {% if session.role == 'ADMIN' %}
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}"
+             href="{{ url_for('admin.dashboard') }}">
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'admin.users' %}active{% endif %}"
+             href="{{ url_for('admin.users') }}">
+            <i class="bi bi-people me-2"></i>Users
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'admin.tasks' %}active{% endif %}"
+             href="{{ url_for('admin.tasks') }}">
+            <i class="bi bi-list-task me-2"></i>Tasks
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'admin.payments' %}active{% endif %}"
+             href="{{ url_for('admin.payments') }}">
+            <i class="bi bi-cash-stack me-2"></i>Payments
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'admin.logs' %}active{% endif %}"
+             href="{{ url_for('admin.logs') }}">
+            <i class="bi bi-journal-text me-2"></i>Activity Logs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'admin.reports' %}active{% endif %}"
+             href="{{ url_for('admin.reports') }}">
+            <i class="bi bi-bar-chart-line me-2"></i>Monthly Reports
+          </a>
+        </li>
+
+      {% elif session.role == 'CLIENT' %}
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'client.dashboard' %}active{% endif %}"
+             href="{{ url_for('client.dashboard') }}">
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'client.create_task' %}active{% endif %}"
+             href="{{ url_for('client.create_task') }}">
+            <i class="bi bi-plus-circle me-2"></i>Post a Task
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'client.my_tasks' %}active{% endif %}"
+             href="{{ url_for('client.my_tasks') }}">
+            <i class="bi bi-list-check me-2"></i>My Tasks
+          </a>
+        </li>
+
+      {% elif session.role == 'FREELANCER' %}
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'freelancer.dashboard' %}active{% endif %}"
+             href="{{ url_for('freelancer.dashboard') }}">
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'freelancer.browse_tasks' %}active{% endif %}"
+             href="{{ url_for('freelancer.browse_tasks') }}">
+            <i class="bi bi-search me-2"></i>Browse Tasks
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'freelancer.assigned_tasks' %}active{% endif %}"
+             href="{{ url_for('freelancer.assigned_tasks') }}">
+            <i class="bi bi-briefcase me-2"></i>My Work
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'freelancer.payments' %}active{% endif %}"
+             href="{{ url_for('freelancer.payments') }}">
+            <i class="bi bi-wallet2 me-2"></i>Payments
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'freelancer.reports' %}active{% endif %}"
+             href="{{ url_for('freelancer.reports') }}">
+            <i class="bi bi-graph-up me-2"></i>Reports
+          </a>
+        </li>
+      {% endif %}
+
+      <hr class="sidebar-divider"/>
+      <li class="nav-item">
+        <a class="nav-link text-danger" href="{{ url_for('auth.logout') }}">
+          <i class="bi bi-box-arrow-left me-2"></i>Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main content wrapper -->
+  <div id="content-wrapper" class="w-100">
+    <nav class="topbar navbar navbar-expand">
+      <div class="container-fluid">
+        <span class="topbar-title">{% block page_title %}Dashboard{% endblock %}</span>
+
+        <div class="ms-auto d-flex align-items-center gap-3">
+          <div class="dropdown">
+            <a href="#" class="nav-link position-relative" data-bs-toggle="dropdown">
+              <i class="bi bi-bell fs-5"></i>
+              {% if notif_count|default(0) > 0 %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {{ notif_count }}
+                </span>
+              {% endif %}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end notif-dropdown">
+              <li><h6 class="dropdown-header">Notifications</h6></li>
+              {% if notifications|default([]) %}
+                {% for n in notifications %}
+                  <li>
+                    <a class="dropdown-item notif-item"
+                       href="{{ url_for('common.mark_notification_read', nid=n.notification_id) }}">
+                      {{ n.message }}
+                      <br>
+                      <small class="text-muted">{{ n.created_at.strftime('%d %b, %H:%M') }}</small>
+                    </a>
+                  </li>
+                {% endfor %}
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item text-center text-primary small"
+                     href="{{ url_for('common.mark_all_read') }}">
+                    Mark all as read
+                  </a>
+                </li>
+              {% else %}
+                <li><span class="dropdown-item text-muted">No new notifications</span></li>
+              {% endif %}
+            </ul>
+          </div>
+
+          <div class="user-pill">
+            <i class="bi bi-person-circle me-1"></i>
+            {{ session.user_name }}
+            <span class="role-badge ms-1">{{ session.role }}</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="px-4 pt-3">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <div class="container-fluid px-4 pb-4">
+{% else %}
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index:9999; width:400px">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <div class="container py-4">
+{% endif %}
+
+        {% block content %}{% endblock %}
+
+      </div>
+
+{% if session.get('user_id') %}
+  </div>
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

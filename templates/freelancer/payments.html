@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}My Payments{% endblock %}
+{% block page_title %}Payment History{% endblock %}
+
+{% block content %}
+<div class="card border-0 shadow-sm mt-3">
+  <div class="card-header bg-white py-3">
+    <h6 class="mb-0 fw-bold">
+      <i class="bi bi-wallet2 me-2 text-success"></i>Your Earnings
+    </h6>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Task</th>
+            <th>Client</th>
+            <th>Amount (₹)</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in payments %}
+          <tr>
+            <td class="text-muted small">{{ p.payment_id }}</td>
+            <td class="fw-semibold">{{ p.task.title }}</td>
+            <td class="text-muted small">{{ p.client.name }}</td>
+            <td class="fw-bold text-success fs-6">₹{{ p.amount }}</td>
+            <td>
+              <span class="badge {{ status_badge(p.payment_status) }}">{{ p.payment_status }}</span>
+            </td>
+            <td class="text-muted small">{{ p.payment_date.strftime('%d %b %Y') }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="6" class="text-center text-muted py-5">
+              <i class="bi bi-wallet2 fs-2 d-block mb-2"></i>
+              No payments received yet. Complete tasks to earn!
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
